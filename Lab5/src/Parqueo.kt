@@ -6,20 +6,16 @@ import placa.Placa
 class Parqueo(
       var niveles: ArrayList<Nivel> = ArrayList()
 ){
-    fun encontrarNivel(nivel: String): Nivel?{
+    fun encontrarNivel(nivel: String): Int? {
         val nivelesFiltrados = niveles.filter { it.identificador == nivel }
         if (nivelesFiltrados.count() > 0 ){
-            return nivelesFiltrados[0]
+            return nivelesFiltrados.indexOf(nivelesFiltrados[0])
         }
         return null
     }
 
-    fun eliminarNIvel(nivel: Nivel):Boolean{
-        if(encontrarNivel(nivel.identificador)==null){
-            niveles.remove(nivel)
-            return true
-        }
-        return false
+    fun eliminarNIvel(index:Int){
+            niveles.removeAt(index)
     }
     fun añadirNivel(nivel: Nivel):Boolean{
         val idFiltrados = niveles.filter { it.identificador == nivel.identificador }
