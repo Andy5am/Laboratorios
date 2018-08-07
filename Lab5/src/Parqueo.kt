@@ -1,7 +1,6 @@
 package parqueo
 
 import nivel.Nivel
-import placa.Placa
 
 class Parqueo(
       var niveles: ArrayList<Nivel> = ArrayList()
@@ -9,7 +8,7 @@ class Parqueo(
     fun encontrarNivel(nivel: String): Int? {
         val nivelesFiltrados = niveles.filter { it.identificador == nivel }
         if (nivelesFiltrados.count() > 0 ){
-            return nivelesFiltrados.indexOf(nivelesFiltrados[0])
+            return niveles.indexOf(nivelesFiltrados[0])
         }
         return null
     }

@@ -2,10 +2,7 @@ package main
 
 import nivel.Nivel
 import parqueo.Parqueo
-import java.io.IOException
-import java.nio.charset.StandardCharsets
-import java.nio.file.Files
-import java.nio.file.Paths
+import placa.Placa
 
 fun getMenuInicial(nada:Boolean, administrador:Boolean):String{
     if (nada){
@@ -32,29 +29,7 @@ fun getMenuInicial(nada:Boolean, administrador:Boolean):String{
     """.trimIndent()
 }
 
-
-
-
 fun main (args: Array<String>) {
-    var ejemplo:ArrayList<List<String>> = ArrayList()
-    try {
-        val lines = Files.lines(
-                Paths.get("C:/Users/Andy Castillo/Documents/POO/parqueo.txt"),
-                StandardCharsets.UTF_8
-        )
-        lines.forEach { a -> ejemplo.add(a.split("")) }
-    } catch (e: IOException) {
-        println("Error!")
-    }
-
-    var mapa: String =""
-    for (i in 0 until  ejemplo.size){
-        for (j in 0 until ejemplo.get(0).size){
-            mapa+= ejemplo[i][j]
-        }
-        mapa+="\n"
-    }
-    println(mapa)
 
     val miparqueo = Parqueo()
     var continuar = true
@@ -121,7 +96,68 @@ fun main (args: Array<String>) {
         }else {
             when (opcion){
                 1-> {
+                    println("Ingrese su placa: ")
+                    val placa = readLine()!!
+                    var existePlaca = false
+                    for (i in miparqueo.niveles){
+                        if (i.encontrarPlaca(placa)){
+                            existePlaca=true
+                        }
+                    }
+                    if (existePlaca){
+                        println("La placa ya esta registrada")
+                        for (i in miparqueo.niveles){
+                            if (i.encontrarPlaca(placa)){
+                                var nivelDePlaca = miparqueo.niveles.indexOf(i)
+                                println("La placa tiene los siguientes datos: ")
+                                println(miparqueo.niveles[nivelDePlaca])
+                            }
+                        }
+                    }else {
+                        var hayEspacios = false
+                        var nivelesDisponibles: String = "Niveles disponibles:\n"
+                        for (i in miparqueo.niveles){
+                            i.verEspacios()
+                            if (i.verEspacios()){
+                                nivelesDisponibles+=i.identificador+"\n"
+                                hayEspacios = true
+                            }
+                        }
+                        if (hayEspacios) {
+                            println(nivelesDisponibles)
+                            println("Ingrese el identificador del nivel en el que desea parquearse: ")
+                            var nivel = readLine()!!
+                            if (nivel in nivelesDisponibles) {
+                                var mapa = miparqueo.niveles[miparqueo.encontrarNivel(nivel)!!].mapa
+                                var estacionamiento :String=""
+                                for (i in 0 until mapa.size){
+                                    for (j in 0 until mapa[0].size){
+                                        estacionamiento+= mapa[i][j]
+                                    }
+                                    estacionamiento+="\n"
+                                }
+                                println(estacionamiento)
+                                println("Elija el lugar para estacionarse: ")
+                                var lugar = readLine()!!
+                                if (lugar!="@") {
+                                    miparqueo.niveles[miparqueo.encontrarNivel(nivel)!!].actualizarMapa(lugar)
+                                    val newPlaca = Placa(placa, lugar)
+                                    miparqueo.niveles[miparqueo.encontrarNivel(nivel)!!].añadirPlaca(newPlaca)
+                                }else{
+                                    println("Ese lugar esta ocupado")
+                                }
+                            } else {
+                                println("Ese nivel no esta en las opciones")
+                            }
+                        }else {
+                            println("No hay espacio para parquearse")
+                        }
 
+                    }
+
+                }
+                2-> {
+                    nousuario = true
                 }
             }
         }
