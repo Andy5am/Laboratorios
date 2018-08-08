@@ -3,7 +3,6 @@ package parqueo
 import estacionamiento.Estacionamiento
 import nivel.Nivel
 import pared.Pared
-import placa.Placa
 import java.io.IOException
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
@@ -34,7 +33,7 @@ class Parqueo(
         return false
     }
     fun crearNivel(archivo:String,nombre:String, id:String,color:String):Nivel{
-        var mapa :ArrayList<Array<String>> = ArrayList()
+        val mapa :ArrayList<Array<String>> = ArrayList()
         try {
             val lines = Files.lines(
                     Paths.get("C:/Users/Andy Castillo/Documents/POO/$archivo"),
@@ -47,18 +46,18 @@ class Parqueo(
         val newNivel = Nivel(nombre,id,color,archivo,mapa.size, mapa[0].size)
         for (i in 0 until newNivel.alto){
             for (j in 0 until newNivel.ancho){
-                var caracter= mapa[i][j]
+                val caracter= mapa[i][j]
                 when (caracter){
                     " "-> {
 
                     }
                     "*"->{
-                        var nuevaPared = Pared(i,j)
+                        val nuevaPared = Pared(i,j)
                         newNivel.añadirPared(nuevaPared)
                     }
                     else->{
-                        var simbolo = caracter
-                        var nuevoEstacionamiento = Estacionamiento(i,j,simbolo)
+                        val simbolo = caracter
+                        val nuevoEstacionamiento = Estacionamiento(i,j,simbolo)
                         newNivel.añadirEstacionamiento(nuevoEstacionamiento)
                     }
                 }
