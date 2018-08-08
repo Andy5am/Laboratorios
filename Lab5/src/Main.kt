@@ -1,6 +1,5 @@
 package main
 
-import nivel.Nivel
 import parqueo.Parqueo
 import placa.Placa
 
@@ -36,13 +35,11 @@ fun main (args: Array<String>) {
     var nousuario = true
     var administrador = false
     do {
-
         println(getMenuInicial(nousuario,administrador))
 
         println("Ingrese una opcion: ")
         val strOpcion = readLine()!!
         val opcion = strOpcion.toInt()
-
         if (nousuario){
             when (opcion){
                 1-> {
@@ -67,9 +64,8 @@ fun main (args: Array<String>) {
                     val color = readLine()!!
                     println("Ingrese el nombre del archivo de la estructura: ")
                     val estructura = readLine()!!
-                    val newNivel = Nivel(nombre,id,color,estructura)
+                    val newNivel =miparqueo.crearNivel(estructura,nombre,id,color)
                     if(miparqueo.añadirNivel(newNivel)){
-                        newNivel.hacerMapa(estructura)
                         println("Se añadio el nivel")
                     }else{
                         println("El nivel ya existe")
@@ -86,7 +82,14 @@ fun main (args: Array<String>) {
                     }
                 }
                 3-> {
-                    miparqueo.niveles.forEach { a-> println(a) }
+                    miparqueo.niveles.forEach { a-> println("""
+                        Nombre: ${a.nombre}
+                        Identificador:${a.identificador}
+                        Color:${a.color}
+                        Archivo de estructura:${a.estructura}
+                        Placas registradas:${a.placas}
+                        $a
+                    """.trimIndent()) }
                 }
                 4-> {
                     administrador = false
@@ -96,8 +99,9 @@ fun main (args: Array<String>) {
         }else {
             when (opcion){
                 1-> {
+                    var placa = ""
                     println("Ingrese su placa: ")
-                    val placa = readLine()!!
+                    placa = readLine()!!
                     var existePlaca = false
                     for (i in miparqueo.niveles){
                         if (i.encontrarPlaca(placa)){
@@ -108,14 +112,14 @@ fun main (args: Array<String>) {
                         println("La placa ya esta registrada")
                         for (i in miparqueo.niveles){
                             if (i.encontrarPlaca(placa)){
-                                var nivelDePlaca = miparqueo.niveles.indexOf(i)
+                                val nivelDePlaca = miparqueo.niveles.indexOf(i)
                                 println("La placa tiene los siguientes datos: ")
                                 println(miparqueo.niveles[nivelDePlaca])
                             }
                         }
                     }else {
                         var hayEspacios = false
-                        var nivelesDisponibles: String = "Niveles disponibles:\n"
+                        var nivelesDisponibles = "Niveles disponibles:\n"
                         for (i in miparqueo.niveles){
                             i.verEspacios()
                             if (i.verEspacios()){
@@ -126,23 +130,18 @@ fun main (args: Array<String>) {
                         if (hayEspacios) {
                             println(nivelesDisponibles)
                             println("Ingrese el identificador del nivel en el que desea parquearse: ")
-                            var nivel = readLine()!!
+                            val nivel = readLine()!!
                             if (nivel in nivelesDisponibles) {
-                                var mapa = miparqueo.niveles[miparqueo.encontrarNivel(nivel)!!].mapa
-                                var estacionamiento :String=""
-                                for (i in 0 until mapa.size){
-                                    for (j in 0 until mapa[0].size){
-                                        estacionamiento+= mapa[i][j]
-                                    }
-                                    estacionamiento+="\n"
-                                }
-                                println(estacionamiento)
+                                println(miparqueo.niveles[miparqueo.encontrarNivel(nivel)!!])
                                 println("Elija el lugar para estacionarse: ")
-                                var lugar = readLine()!!
+                                val lugar = readLine()!!
                                 if (lugar!="@") {
-                                    miparqueo.niveles[miparqueo.encontrarNivel(nivel)!!].actualizarMapa(lugar)
-                                    val newPlaca = Placa(placa, lugar)
-                                    miparqueo.niveles[miparqueo.encontrarNivel(nivel)!!].añadirPlaca(newPlaca)
+                                    if(miparqueo.niveles[miparqueo.encontrarNivel(nivel)!!].comprobarEstacionamiento(lugar)) {
+                                        val newPlaca = Placa(placa)
+                                        miparqueo.niveles[miparqueo.encontrarNivel(nivel)!!].añadirPlaca(newPlaca)
+                                    }else{
+                                        println("No existe ese estacionamiento")
+                                    }
                                 }else{
                                     println("Ese lugar esta ocupado")
                                 }
@@ -152,18 +151,13 @@ fun main (args: Array<String>) {
                         }else {
                             println("No hay espacio para parquearse")
                         }
-
                     }
-
                 }
                 2-> {
                     nousuario = true
                 }
             }
         }
-
-
-
     }while (continuar)
 
 

@@ -1,6 +1,13 @@
 package parqueo
 
+import estacionamiento.Estacionamiento
 import nivel.Nivel
+import pared.Pared
+import placa.Placa
+import java.io.IOException
+import java.nio.charset.StandardCharsets
+import java.nio.file.Files
+import java.nio.file.Paths
 
 class Parqueo(
       var niveles: ArrayList<Nivel> = ArrayList()
@@ -26,5 +33,43 @@ class Parqueo(
         }
         return false
     }
+    fun crearNivel(archivo:String,nombre:String, id:String,color:String):Nivel{
+        var mapa :ArrayList<Array<String>> = ArrayList()
+        try {
+            val lines = Files.lines(
+                    Paths.get("C:/Users/Andy Castillo/Documents/POO/$archivo"),
+                    StandardCharsets.UTF_8
+            )
+            lines.forEach { a -> mapa.add(a.split("").toTypedArray()) }
+        } catch (e: IOException) {
+            println("Error!")
+        }
+        val newNivel = Nivel(nombre,id,color,archivo,mapa.size, mapa[0].size)
+        for (i in 0 until newNivel.alto){
+            for (j in 0 until newNivel.ancho){
+                var caracter= mapa[i][j]
+                when (caracter){
+                    " "-> {
+
+                    }
+                    "*"->{
+                        var nuevaPared = Pared(i,j)
+                        newNivel.añadirPared(nuevaPared)
+                    }
+                    else->{
+                        var simbolo = caracter
+                        var nuevoEstacionamiento = Estacionamiento(i,j,simbolo)
+                        newNivel.añadirEstacionamiento(nuevoEstacionamiento)
+                    }
+                }
+            }
+        }
+
+        return newNivel
+
+
+    }
+
+
 
 }

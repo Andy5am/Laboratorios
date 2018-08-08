@@ -1,5 +1,7 @@
 package nivel
 
+import estacionamiento.Estacionamiento
+import pared.Pared
 import placa.Placa
 import java.io.IOException
 import java.nio.charset.StandardCharsets
@@ -11,8 +13,11 @@ class Nivel (
         val identificador: String,
         val color: String,
         val estructura: String,
+        val alto:Int,
+        val ancho:Int,
+        private var paredes: ArrayList<Pared> = ArrayList(),
         var placas: ArrayList<Placa> = ArrayList(),
-        var mapa: ArrayList<Array<String>> = ArrayList()
+        var estacionamientos:ArrayList<Estacionamiento> = ArrayList()
 ){
     fun encontrarPlaca(placa: String): Boolean{
         val placasFiltradas = placas.filter { it.placa == placa }
@@ -29,58 +34,77 @@ class Nivel (
         }
         return false
     }
-
-    fun hacerMapa(estructura: String): ArrayList<Array<String>> {
-        try {
-            val lines = Files.lines(
-                    Paths.get("C:/Users/Andy Castillo/Documents/POO/$estructura"),
-                    StandardCharsets.UTF_8
-            )
-            lines.forEach { a -> mapa.add(a.split("").toTypedArray()) }
-        } catch (e: IOException) {
-            println("Error!")
-        }
-        return mapa
+    fun añadirPared(pared: Pared){
+        paredes.add(pared)
     }
+    fun añadirEstacionamiento(estacionamiento:Estacionamiento){
+        estacionamientos.add(estacionamiento)
+    }
+    fun hayPared(i:Int,j:Int):Boolean{
+        for (a in paredes){
+            if (a.x==i && a.y==j){
+                return true
+            }
+        }
+        return false
+    }
+    fun hayEstacionamiento(i:Int,j:Int):Boolean{
+        for (a in estacionamientos){
+            if (a.x==i && a.y==j){
+                return true
+            }
+        }
+        return false
+    }
+    fun obtenerEstacionamiento(i:Int,j:Int):Estacionamiento?{
+        for (a in estacionamientos){
+            if (a.x==i && a.y==j){
+                return a
+            }
+        }
+        return null
+    }
+
 
     fun verEspacios():Boolean{
-        for (i in 0 until mapa.size){
-            for (j in 0 until mapa[0].size){
-                if (mapa[i][j]!= " "&& mapa[i][j]!= "*"&&mapa[i][j]!="@"){
-                    return true
+        for (i in 0 until alto){
+            for (j in 0 until ancho){
+                for (a in estacionamientos) {
+                    if (a.caracter != "@") {
+                        return true
+                    }
                 }
             }
         }
         return false
     }
-    fun actualizarMapa(lugar:String):Boolean{
-        for (i in 0 until mapa.size){
-            for (j in 0 until mapa[0].size){
-                if (lugar == mapa[i][j]){
-                    mapa[i][j] = "@"
-                    return true
-                }
+    fun comprobarEstacionamiento(caracter:String):Boolean{
+        for (i in estacionamientos){
+            if (i.caracter==caracter){
+                i.caracter="@"
+                return true
             }
         }
         return false
     }
+
 
     override fun toString(): String {
         var map =""
-        for (i in 0 until mapa.size){
-            for (j in 0 until mapa[0].size) {
-                var lugar:String=mapa[i][j]
-                if (placas.forEach { a->a.lugar }.equals(mapa[i][j])){
-                    mapa[i][j].replace(lugar,"@")
+        for (i in 0 until alto){
+            for (j in 0 until ancho) {
+                if (hayPared(i,j)){
+                    map+="*"
+                }else if (hayEstacionamiento(i,j)){
+                    var caracter = obtenerEstacionamiento(i,j)
+                    map+= caracter
+                }else{
+                    map+=" "
                 }
-                map += mapa[i][j]
             }
             map+="\n"
         }
         return """
-            Nombre: $nombre
-            Identificador: $identificador
-            Color: $color
             Mapa:
 $map
         """.trimIndent()
