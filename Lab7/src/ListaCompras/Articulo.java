@@ -26,6 +26,14 @@ public class Articulo {
         }
     }
 
+    @Override
+    public String toString() {
+        return "Nombre:"+nombre+
+                "\nCantidad:"+cantidad+
+                "\nPrecio:"+precio+
+                "\nTotal:"+total+
+                "\nEstado:"+estado;
+    }
 }
 
 
