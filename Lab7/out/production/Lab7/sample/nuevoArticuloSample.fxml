@@ -17,9 +17,9 @@
       <Label layoutX="61.0" layoutY="139.0" text="Nombre:" />
       <Label layoutX="61.0" layoutY="201.0" text="Cantidad:" />
       <Label layoutX="61.0" layoutY="254.0" text="Precio:" />
-      <TextField layoutX="159.0" layoutY="134.0" />
-      <TextField layoutX="159.0" layoutY="192.0" />
-      <TextField layoutX="159.0" layoutY="249.0" />
+      <TextField fx:id="nombreField" layoutX="159.0" layoutY="134.0" />
+      <TextField fx:id="cantidadField" layoutX="159.0" layoutY="192.0" />
+      <TextField fx:id="precioField" layoutX="159.0" layoutY="249.0" />
       <Button layoutX="363.0" layoutY="306.0" mnemonicParsing="false" text="Crear" />
    </children>
 </AnchorPane>

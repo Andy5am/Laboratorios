@@ -1,15 +1,17 @@
 package ListaCompras;
 
-import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.text.SimpleDateFormat;
 
 public class ListaCompras {
+    //atributos
     SimpleStringProperty nombre;
     SimpleDateFormat fecha;
     SimpleStringProperty descripcion;
-    SimpleListProperty<Articulo> articulos = new SimpleListProperty();
+    ObservableList<Articulo> articulos = FXCollections.observableArrayList();
 
     public ListaCompras(String nombre,String descripcion){
         this.nombre= new SimpleStringProperty(nombre);
@@ -17,13 +19,6 @@ public class ListaCompras {
         this.fecha = new SimpleDateFormat();
     }
 
-    public void añadirArticuolo(Articulo articulo){
-        for(int i=0; i <articulos.size(); i++){
-            if (articulos.get(i).equals(articulo)){
-                this.articulos.add(articulo);
-            }
-        }
-    }
 
     public String getNombre() {
         return nombre.get();

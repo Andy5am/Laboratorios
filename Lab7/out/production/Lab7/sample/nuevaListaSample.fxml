@@ -48,7 +48,7 @@
          </padding>
       </Label>
       <TextField fx:id="descriptionField" prefWidth="600.0" GridPane.rowIndex="1" />
-      <Button mnemonicParsing="false" onAction="#abrirVentanaNuevaLista" text="&lt;" />
+      <Button mnemonicParsing="false" onAction="#cerrarVentanaNuevaLista" text="&lt;" />
       <Button mnemonicParsing="false" onAction="#abrirVentanaEditarLista" prefHeight="31.0" prefWidth="72.0" text="Crear" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
          <GridPane.margin>
             <Insets top="100.0" />

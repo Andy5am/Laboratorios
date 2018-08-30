@@ -1,15 +1,14 @@
 package sample;
 
 import ListaCompras.ListaCompras;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -17,51 +16,55 @@ import java.io.IOException;
 
 public class NuevaListaSample {
 
+    //Conexion con grafico
+    @FXML
+    private TextField nameField;
+    @FXML
+    private TextField descriptionField;
 
-    @FXML
-    TextField nameField;
-    @FXML
-    TextField descriptionField;
-    public void abrirVentanaNuevaLista(ActionEvent event){
-        Parent root;
+    private ObservableList<ListaCompras> data;
+
+    //Metodo para actualizar datos de listas
+    public void definirData(ObservableList<ListaCompras> data){this.data=data;}
+
+    //metodo para regresar
+    public void cerrarVentanaNuevaLista(ActionEvent event){
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("sample.fxml"));
-            root =loader.load();
-            Stage stage = new Stage();
-            stage.setTitle("Control de listas de compra");
-            stage.setScene(new Scene(root,450,450));
-            Controller controller = loader.getController();
-            ObservableList<ListaCompras>data =FXCollections.observableArrayList(
-                new ListaCompras(nameField.getText(),descriptionField.getText()));
-            controller.nombreCol.setCellValueFactory(
-                    new PropertyValueFactory<ListaCompras,String>("nombre")
-            );
-            controller.estimadoCol.setCellValueFactory(
-                    new PropertyValueFactory<ListaCompras,String>("descripcion")
-            );
-            controller.ListasComprasTabla.setItems(data);
-            stage.show();
-        }catch (IOException e){
+            //Se cierra la ventana
+            ((Node)event.getSource()).getScene().getWindow().hide();
+        }catch (Exception e){
             e.printStackTrace();
         }
     }
+    //Metodo para abrir la ventana de editar lista y actualizar los datos de la tabla de la ventana principal
     public void abrirVentanaEditarLista(ActionEvent event){
-        Parent root;
+
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("editarListaSample.fxml"));
-            root =loader.load();
+            //Se cargan las ventanas
+            FXMLLoader loaderSample = new FXMLLoader(getClass().getResource("sample.fxml"));
+            Parent rootSample = loaderSample.load();
+
+            FXMLLoader loaderEditarLista = new FXMLLoader(getClass().getResource("editarListaSample.fxml"));
+            Parent rootEditarLista =loaderEditarLista.load();
             Stage stage = new Stage();
             stage.setTitle("Lista:");
-            stage.setScene(new Scene(root,600,450));
-            EditarListaSample controllerEditarLista = loader.getController();
-            ObservableList<ListaCompras>data= FXCollections.observableArrayList(
-                new ListaCompras(nameField.getText(),descriptionField.getText()));
-            controllerEditarLista.nombreLista.setText(String.valueOf(new PropertyValueFactory<ListaCompras,String>("nombre")));
-            controllerEditarLista.descripcionLista.setText(String.valueOf(new PropertyValueFactory<ListaCompras,String>("descripcion")));
-            controllerEditarLista.nombreLista.setText(String.valueOf(data.get(0).getNombre()));
-            controllerEditarLista.descripcionLista.setText(String.valueOf(data.get(0).getDescripcion()));
-
-            stage.show();
+            stage.setScene(new Scene(rootEditarLista,600,450));
+            //Se ve que haya texto y se crea la lista
+            if (nameField.getText()!=null && descriptionField.getText()!=null) {
+                ListaCompras nuevaLista = new ListaCompras(nameField.getText(),descriptionField.getText());
+                //Se agrega a las lista de nuevas listas
+                this.data.add(nuevaLista);
+                //se carga el controller de la ventana principal y se actualiza la lista de listas principal
+                Controller controller = loaderSample.getController();
+                controller.definirObjetos(this.data);
+                //Se carga el controller de la ventana de edicion de listas
+                EditarListaSample controllerEditarLista = loaderEditarLista.getController();
+                controllerEditarLista.definirPantalla(nuevaLista);
+                //se cierra la ventana de nueva lista
+                ((Node)(event.getSource())).getScene().getWindow().hide();
+                //se mustra la ventana de edicion de listas
+                stage.show();
+            }
         }catch (IOException e){
             e.printStackTrace();
         }
