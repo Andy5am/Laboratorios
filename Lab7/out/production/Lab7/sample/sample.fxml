@@ -26,9 +26,9 @@
       <TableView fx:id="ListasComprasTabla" prefHeight="200.0" prefWidth="420.0" GridPane.rowIndex="4">
         <columns>
           <TableColumn fx:id="nombreCol" prefWidth="113.0" text="Nombre" />
-          <TableColumn fx:id="fechaCol" prefWidth="87.0" text="Fecha" />
-            <TableColumn fx:id="pendienteCol" prefWidth="99.0" text="Pendientes" />
-            <TableColumn fx:id="estimadoCol" prefWidth="119.0" text="Estimado" />
+          <TableColumn fx:id="fechaCol" prefWidth="121.0" text="Fecha" />
+            <TableColumn fx:id="pendienteCol" prefWidth="89.0" text="Pendientes" />
+            <TableColumn fx:id="estimadoCol" prefWidth="95.0" text="Estimado" />
         </columns>
       </TableView>
       <Label text="Mis Listas:" GridPane.rowIndex="3">

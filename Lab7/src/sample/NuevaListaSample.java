@@ -56,14 +56,17 @@ public class NuevaListaSample {
                 this.data.add(nuevaLista);
                 //se carga el controller de la ventana principal y se actualiza la lista de listas principal
                 Controller controller = loaderSample.getController();
-                controller.definirObjetos(this.data);
+                //controller.definirObjetos(this.data);
                 //Se carga el controller de la ventana de edicion de listas
                 EditarListaSample controllerEditarLista = loaderEditarLista.getController();
+                controllerEditarLista.definirListas(this.data);
                 controllerEditarLista.definirPantalla(nuevaLista);
                 //se cierra la ventana de nueva lista
                 ((Node)(event.getSource())).getScene().getWindow().hide();
                 //se mustra la ventana de edicion de listas
                 stage.show();
+            }else {
+                System.out.println("Hay algun dato sin escribir");
             }
         }catch (IOException e){
             e.printStackTrace();

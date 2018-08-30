@@ -15,21 +15,21 @@
             <Font size="32.0" />
          </font>
       </Label>
-      <Button layoutX="434.0" layoutY="68.0" mnemonicParsing="false" text="Articulo" />
+      <Button layoutX="434.0" layoutY="68.0" mnemonicParsing="false" onAction="#abrirVentanaNuevoArticulo" text="Articulo" />
       <Label fx:id="descripcionLista" layoutX="81.0" layoutY="126.0" prefHeight="39.0" prefWidth="429.0" />
-      <TableView fx:id="articuloTabla" layoutX="103.0" layoutY="166.0" prefHeight="207.0" prefWidth="377.0">
+      <TableView fx:id="articulosTabla" layoutX="103.0" layoutY="166.0" prefHeight="207.0" prefWidth="385.0">
         <columns>
           <TableColumn fx:id="articuloCol" prefWidth="75.0" text="Articulo" />
           <TableColumn fx:id="cantidadCol" prefWidth="75.0" text="Cantidad" />
             <TableColumn fx:id="unitarioCol" prefWidth="75.0" text="Unitario" />
             <TableColumn fx:id="totalCol" prefWidth="75.0" text="Total" />
-            <TableColumn fx:id="estadoCol" prefWidth="75.0" text="Estado" />
+            <TableColumn fx:id="estadoCol" prefWidth="84.0" text="Estado" />
         </columns>
       </TableView>
       <Label layoutX="283.0" layoutY="385.0" text="Marcar como:" />
-      <Button layoutX="392.0" layoutY="380.0" mnemonicParsing="false" text="Pendiente" />
-      <Button layoutX="494.0" layoutY="380.0" mnemonicParsing="false" text="Comprado" />
-      <Label layoutX="26.0" layoutY="396.0" text="Pendiente:">
+      <Button layoutX="392.0" layoutY="380.0" mnemonicParsing="false" onAction="#marcarPendiente" text="Pendiente" />
+      <Button layoutX="494.0" layoutY="380.0" mnemonicParsing="false" onAction="#marcarComprado" text="Comprado" />
+      <Label fx:id="pendiente" layoutX="26.0" layoutY="396.0" text="Pendiente:">
          <font>
             <Font size="30.0" />
          </font>

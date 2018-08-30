@@ -8,7 +8,7 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.NuevoArticuloSample">
    <children>
-      <Button layoutX="47.0" layoutY="57.0" mnemonicParsing="false" onAction="#abrirVentanaEditarLista" text="&lt;" />
+      <Button layoutX="47.0" layoutY="57.0" mnemonicParsing="false" onAction="#cerrarVentana" text="&lt;" />
       <Label layoutX="104.0" layoutY="57.0" text="Nuevo articulo">
          <font>
             <Font size="25.0" />
@@ -20,6 +20,6 @@
       <TextField fx:id="nombreField" layoutX="159.0" layoutY="134.0" />
       <TextField fx:id="cantidadField" layoutX="159.0" layoutY="192.0" />
       <TextField fx:id="precioField" layoutX="159.0" layoutY="249.0" />
-      <Button layoutX="363.0" layoutY="306.0" mnemonicParsing="false" text="Crear" />
+      <Button layoutX="363.0" layoutY="306.0" mnemonicParsing="false" onAction="#crearArticulo" text="Crear" />
    </children>
 </AnchorPane>

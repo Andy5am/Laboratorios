@@ -1,6 +1,7 @@
 package sample;
 
 import ListaCompras.ListaCompras;
+import ListaCompras.Articulo;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -30,6 +31,8 @@ public class Controller {
     private TableColumn estimadoCol;
 
     private ObservableList<ListaCompras> data = FXCollections.observableArrayList();
+    private ObservableList<Articulo> articulos = FXCollections.observableArrayList();
+
 
     public void initialize(){
         nombreCol.setCellValueFactory(
@@ -50,6 +53,13 @@ public class Controller {
     public void definirObjetos(ObservableList<ListaCompras> lista){
         this.data=lista;
     }
+    public void definirArticulos(ObservableList<Articulo> articulos){
+        this.articulos=articulos;
+    }
+
+    public void refrescarTabla(){
+        ListasComprasTabla.refresh();
+    }
     //Metodo para abrir la vetana de agregar lista
     public void abrirVentanaNuevaLista(ActionEvent event){
         Parent root;
@@ -64,6 +74,7 @@ public class Controller {
             NuevaListaSample controllerNuevaLista = loader.getController();
             //Se actualiza los datos de listas
             controllerNuevaLista.definirData(this.data);
+
             stage.show();
         }catch (IOException e){
             e.printStackTrace();
@@ -81,10 +92,18 @@ public class Controller {
             stage.setScene(new Scene(root,600,450));
             //Se define la selecciono de lista y lo que se hara con ella
             ListaCompras listaSeleccionada = ListasComprasTabla.getSelectionModel().getSelectedItem();
-            EditarListaSample controllerEditarLista = loader.getController();
-            controllerEditarLista.definirPantalla(listaSeleccionada);
-            //Se muestra la ventana
-            stage.show();
+            if (listaSeleccionada!=null) {
+                EditarListaSample controllerEditarLista = loader.getController();
+                controllerEditarLista.definirPantalla(listaSeleccionada);
+
+                listaSeleccionada.getArticulos().forEach(articulo -> controllerEditarLista.anadirArticulos(articulo));
+
+
+                //Se muestra la ventana
+                stage.show();
+            }else{
+                System.out.println("No ha seleccionado nada");
+            }
         }catch (IOException e){
             e.printStackTrace();
         }
@@ -93,6 +112,10 @@ public class Controller {
     public void eliminarLista(){
         //se define la lista seleccionada y se elimina
         ListaCompras listaSeleccionada = ListasComprasTabla.getSelectionModel().getSelectedItem();
-        ListasComprasTabla.getItems().remove(listaSeleccionada);
+        if (listaSeleccionada!=null) {
+            ListasComprasTabla.getItems().remove(listaSeleccionada);
+        }else {
+            System.out.println("No hay lista seleccionada");
+        }
     }
 }
